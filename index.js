@@ -136,61 +136,6 @@ client.on('message' , message => {
 
 
 
-
-function everything1(className) {
-
-
-
-  const user = message.author;         // Fetch sender's username
-  const userVoiceChannel = message.member.voice.channelID;   // Fetch sender's voice channe
-  console.log(classList)
-  console.log(userVoiceChannel);
-  
-  if (!userVoiceChannel) {
-    return message.channel.send("Cant , no one is here");
-  }
-  else {          
-
-    var present = 0;
-    var reactionPresent = [];
-    var channelSize =  message.member.voice.channel.members.size; 
-    if (className) {var classList = message.guild.roles.cache.find(role => role.name == className).members.map(member => member.user.tag);}
-    
-
-
-    message.channel.send("Please Check " + user.username  +  "'s Presence: ").then(msg => {
-
-      msg.react(`👍`);
-      const filter = (reaction, user) => {
-          reactionPresent.push(user['id']);   // Add whoever voted to array
-          console.log(user['id']); 
-          return [`👍`].includes(reaction.emoji.name);
-      };
-
-      const collector = msg.createReactionCollector(filter, {max: channelSize ,time: 10000});
-      collector.on('collect', (reaction) => {
-          if (reaction.emoji.name === `👍`) {
-              present +=1
-              channelSize = message.member.voice.channel.members.size;
-              console.log(present)
-          }
-      });
-      collector.on('end', (reaction, reactionCollector) => {
-             if (present === (channelSize)){
-                  message.channel.send("Everyone is here.");
-              }
-              else {
-                  var userToId = message.member.voice.channel.members.map(member => member.user.toString()); 
-                  res = userToId.filter(el => !reactionPresent.includes(el))             
-                  message.channel.send("These students: [ " + res + " ] are absent");
-              }
-      });
-
-  })
-  }
-}
-
-
 function countClass(className , presenceTime , stopProcess) {
 
     const user = message.author;         // Fetch sender's username
